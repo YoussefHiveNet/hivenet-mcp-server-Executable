@@ -1,14 +1,35 @@
 from mcp.server.fastmcp import FastMCP
 from cube_client import CubeClient
 import os
+import sys
 from dotenv import load_dotenv
 
-load_dotenv()
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+# Load .env from the bundled path if available
+load_dotenv(resource_path(".env"))
 
 
 CUBE_URL = "https://88684694-fc0a-4ce6-afc7-deb10668883d-4000.tenants.hivecompute.ai/cubejs-api/v1"
 SECRET = os.getenv("CUBEJS_API_SECRET")
-cube = CubeClient(CUBE_URL, SECRET)
+
+if not SECRET:
+    # If still not found, check standard location as fallback
+    load_dotenv() 
+    SECRET = os.getenv("CUBEJS_API_SECRET")
+
+if not SECRET:
+    cube = CubeClient(CUBE_URL, "MISSING_SECRET")
+else:
+    cube = CubeClient(CUBE_URL, SECRET)
 
 mcp = FastMCP(
     name="hivenet-analytics",
