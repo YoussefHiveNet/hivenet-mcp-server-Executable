@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "hivenet-analytics": {
+      "command": "python",
+      "args": ["server.py"],
+      "cwd": "F:/Hivenet/mcp-server"
+    }
+  }
+}

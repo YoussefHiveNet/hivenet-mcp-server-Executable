@@ -1,0 +1,5 @@
+mcp
+pandas
+requests
+PyJWT
+python-dotenv
