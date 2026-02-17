@@ -3,3 +3,4 @@ pandas
 requests
 PyJWT
 python-dotenv
+typer
